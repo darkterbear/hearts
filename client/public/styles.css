@@ -1,0 +1,30 @@
+@font-face {
+  font-family: Sofia-Pro;
+  src: url(assets/sofia_pro_regular.otf);
+  font-weight: 400;
+}
+html {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: "Sofia-Pro";
+  width: 100%;
+  font-size: 16px;
+  height: 100%;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: "Sofia-Pro";
+  width: 100%;
+  height: 100%;
+}
+
+.logo {
+  position: absolute;
+  top: 1em;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*# sourceMappingURL=styles.css.map */
