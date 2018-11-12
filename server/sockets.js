@@ -141,6 +141,9 @@ module.exports = server => {
 			}
 
 			// game is ready to start
+			// close the room
+			room.open = false
+
 			io.to(roomId).emit('startGame')
 		})
 
