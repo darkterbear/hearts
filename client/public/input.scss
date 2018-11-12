@@ -76,6 +76,24 @@ input {
 	color: $blue;
 }
 
+a.textButton {
+	color: $blue;
+	cursor: pointer;
+	text-decoration: none;
+	margin-top: 2em;
+
+	h2 {
+		margin: 0;
+	}
+
+	&:link {
+		color: $blue;
+	}
+	&:hover {
+		color: $blue;
+	}
+}
+
 .button {
 	@include noselect();
 	cursor: pointer;

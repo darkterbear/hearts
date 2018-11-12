@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import qs from 'query-string'
-import { Logo, Button } from './Components'
+import { Logo, Button, BackButton } from './Components'
 import Socket from './sockets'
 
 export default class JoinPage extends Component {
@@ -33,6 +33,10 @@ export default class JoinPage extends Component {
 		Socket.emit('joinRoom', this.state.roomId)
 	}
 
+	handleBackClick = () => {
+		this.props.history.push('/')
+	}
+
 	render() {
 		return (
 			<div className="wrapper">
@@ -50,6 +54,7 @@ export default class JoinPage extends Component {
 						/>
 					</div>
 				</div>
+				<BackButton onClick={this.handleBackClick} />
 				<Logo />
 			</div>
 		)

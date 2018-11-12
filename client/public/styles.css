@@ -57,6 +57,22 @@ input {
   color: #527aff;
 }
 
+a.textButton {
+  color: #527aff;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 2em;
+}
+a.textButton h2 {
+  margin: 0;
+}
+a.textButton:link {
+  color: #527aff;
+}
+a.textButton:hover {
+  color: #527aff;
+}
+
 .button {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

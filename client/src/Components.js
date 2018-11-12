@@ -22,3 +22,16 @@ export class Button extends Component {
 		)
 	}
 }
+
+export class BackButton extends Component {
+	render() {
+		return (
+			<a
+				className="textButton"
+				style={{ position: 'absolute', top: '1em', left: '3em' }}
+				onClick={this.props.onClick}>
+				<h2>back</h2>
+			</a>
+		)
+	}
+}
