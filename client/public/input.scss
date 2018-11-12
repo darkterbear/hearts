@@ -14,6 +14,7 @@ $onBackground: #000;
 $blue: #527aff;
 $red: #eb5757;
 $grayLight: #c4c4c4;
+$grayDark: #888;
 
 ::placeholder {
 	/* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -102,11 +103,15 @@ input {
 
 	&:hover {
 		transition: 0.3s;
-		box-shadow: 1px 3px 12px #888;
+		box-shadow: 1px 3px 12px $grayDark;
 	}
 	&:active {
 		transition: 0.3s;
 		box-shadow: 1px 2px 8px $grayLight;
+	}
+
+	&.disabled {
+		background: $grayDark;
 	}
 }
 

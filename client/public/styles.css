@@ -87,6 +87,9 @@ input {
   transition: 0.3s;
   box-shadow: 1px 2px 8px #c4c4c4;
 }
+.button.disabled {
+  background: #888;
+}
 
 .logo {
   position: absolute;

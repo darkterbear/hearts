@@ -1,7 +1,7 @@
 'use strict'
 
 const app = require('express')()
-const port = 3000
+const port = 3001
 
 const server = require('http').Server(app)
 

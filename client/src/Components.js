@@ -11,8 +11,12 @@ export class Button extends Component {
 		return (
 			<div
 				style={this.props.style}
-				onClick={this.props.onClick}
-				className="button">
+				onClick={() => {
+					if (this.props.enabled) {
+						this.props.onClick()
+					}
+				}}
+				className={'button' + (this.props.enabled ? '' : ' disabled')}>
 				{this.props.text}
 			</div>
 		)
