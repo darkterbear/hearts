@@ -1,20 +1,19 @@
 @font-face {
 	font-family: Sofia-Pro;
 	src: url(assets/sofia_pro_regular.otf);
-	font-weight: 400;
 }
 
-// @font-face {
-// 	font-family: Sofia-Pro;
-// 	src: url(assets/sofia_pro_bold.otf);
-// 	font-weight: bold;
-// }
+@font-face {
+	font-family: Sofia-Pro-Bold;
+	src: url(assets/sofia_pro_bold.otf);
+}
 
 $onBackground: #000;
 $blue: #527aff;
 $red: #eb5757;
 $grayLight: #c4c4c4;
 $grayDark: #888;
+$green: #0aca84;
 
 ::placeholder {
 	/* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -134,6 +133,28 @@ input {
 
 		.buttonWrapper {
 			margin-top: 1em;
+		}
+
+		.nameWrapper {
+			display: flex;
+			flex-direction: column;
+			justify-content: top;
+			align-items: center;
+		}
+
+		h2 {
+			display: inline-block;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+
+			&.me {
+				// font-size: 2em;
+				border-bottom: 2px $blue solid;
+			}
+
+			&.ready {
+				color: $green;
+			}
 		}
 	}
 }

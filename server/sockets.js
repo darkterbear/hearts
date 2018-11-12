@@ -83,6 +83,7 @@ module.exports = server => {
 			}
 
 			rooms[roomId] = { members: [id], open: true }
+			users[id].room = roomId
 
 			socket.emit('roomId', roomId)
 			socket.join(roomId)
@@ -99,6 +100,7 @@ module.exports = server => {
 
 			rooms[roomId].members.push(id)
 			socket.join(roomId)
+			users[id].room = roomId
 
 			// push new players to entire group
 			updatePlayers(roomId)
@@ -123,21 +125,20 @@ module.exports = server => {
 
 		socket.on('disconnect', () => {
 			const handler = setTimeout(() => {
+				console.log(users[id])
 				if (!users[id] || !users[id].room) return
 
 				const roomId = users[id].room
 				const room = rooms[roomId]
 				socket.leave(roomId)
-
 				if (room.members.length <= 1) {
 					delete rooms[roomId]
-					users[id].room = null
 				} else {
 					room.members.splice(room.members.indexOf(id), 1)
-					users[id].room = null
 					updatePlayers(roomId)
 				}
-			}, 5000)
+				delete users[id]
+			}, 3000)
 
 			disconnects[id] = handler
 		})
