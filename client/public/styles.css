@@ -3,6 +3,21 @@
   src: url(assets/sofia_pro_regular.otf);
   font-weight: 400;
 }
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #c4c4c4;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #c4c4c4;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #c4c4c4;
+}
+
 html {
   margin: 0 !important;
   padding: 0 !important;
@@ -10,6 +25,7 @@ html {
   width: 100%;
   font-size: 16px;
   height: 100%;
+  text-align: center;
 }
 
 body {
@@ -20,11 +36,77 @@ body {
   height: 100%;
 }
 
+h1 {
+  font-size: 5em;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+input {
+  margin-top: 1em;
+  font-family: "Sofia-Pro";
+  border: none;
+  font-size: 1.5em;
+  text-align: center;
+  color: #527aff;
+}
+
+.button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  display: inline-block;
+  background: #527aff;
+  color: white;
+  border-radius: 2em;
+  border: none;
+  transition: 0.3s;
+  height: 1.7em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-top: 0.1em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  box-shadow: 1px 2px 8px #c4c4c4;
+  font-size: 1.5em;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+}
+.button:hover {
+  transition: 0.3s;
+  box-shadow: 1px 3px 12px #888;
+}
+.button:active {
+  transition: 0.3s;
+  box-shadow: 1px 2px 8px #c4c4c4;
+}
+
 .logo {
   position: absolute;
   top: 1em;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.wrapper .center {
+  display: inline-block;
+}
+.wrapper .center .buttonWrapper {
+  margin-top: 1em;
 }
 
 /*# sourceMappingURL=styles.css.map */
