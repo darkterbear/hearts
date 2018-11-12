@@ -3,7 +3,8 @@
  *
  * 'id': {
  *    name: String,
- *    room: String
+ *    room: String,
+ *    voted: Boolean
  * }
  */
 var users = {}
@@ -69,7 +70,8 @@ module.exports = server => {
 
 			users[id] = {
 				name,
-				room: null
+				room: null,
+				voted: false
 			}
 		})
 
@@ -123,9 +125,27 @@ module.exports = server => {
 			}
 		})
 
+		socket.on('voteStart', () => {
+			if (!users[id].room) return
+
+			users[id].voted = true
+			updatePlayers(users[id].room)
+
+			// check if game is ready to start
+			const roomId = users[id].room
+			const room = rooms[roomId]
+			if (room.members.length < 2) return
+			for (var i = 0; i < room.members.length; i++) {
+				var member = users[room.members[i]]
+				if (!member.voted) return
+			}
+
+			// game is ready to start
+			io.to(roomId).emit('startGame')
+		})
+
 		socket.on('disconnect', () => {
 			const handler = setTimeout(() => {
-				console.log(users[id])
 				if (!users[id] || !users[id].room) return
 
 				const roomId = users[id].room

@@ -21,11 +21,15 @@ export default class LobbyPage extends Component {
 		Socket.on('updatePlayers', players => {
 			this.setState({ players })
 		})
+
+		Socket.on('startGame', () => {
+			console.log('game started')
+		})
 	}
 
 	handleVoteStart = () => {
 		this.setState({ voted: true })
-		// Socket.emit('voteStart', this.state.roomId)
+		Socket.emit('voteStart')
 	}
 
 	render() {
