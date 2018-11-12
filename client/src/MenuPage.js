@@ -13,8 +13,20 @@ export default class MenuPage extends Component {
 		Socket.on('id', id => {
 			this.setState({ id })
 		})
+
 		Socket.on('roomId', roomId => {
-			// TODO: go to room lobby
+			// go to room lobby
+			this.props.history.push('/lobby', {
+				roomId,
+				id: this.state.id,
+				players: [
+					{
+						id: this.state.id,
+						name: this.state.name,
+						room: roomId
+					}
+				]
+			})
 		})
 	}
 
@@ -29,7 +41,8 @@ export default class MenuPage extends Component {
 
 	handleJoinRoom = () => {
 		Socket.emit('setName', this.state.name)
-		// TODO: go to room id input
+		// window.location.href = '/join?id=' + this.state.id
+		this.props.history.push('/join', { id: this.state.id })
 	}
 
 	render() {

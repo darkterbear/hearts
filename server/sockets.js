@@ -9,6 +9,11 @@
 var users = {}
 
 /**
+ * A dictionary of pending setTimeout handlers for disconnecting users
+ */
+var disconnects = {}
+
+/**
  * Room schema
  *
  * 'id': {
@@ -34,7 +39,11 @@ module.exports = server => {
 	const updatePlayers = roomId => {
 		io.to(roomId).emit(
 			'updatePlayers',
-			rooms[roomId].members.map(m => users[m])
+			rooms[roomId].members.map(m => {
+				var u = { ...users[m] }
+				u.id = m
+				return u
+			})
 		)
 	}
 
@@ -47,6 +56,12 @@ module.exports = server => {
 
 		// send id to client
 		socket.emit('id', id)
+
+		// handle setId
+		socket.on('setId', id => {
+			id = id
+			clearTimeout(disconnects[id])
+		})
 
 		// handle setName from client
 		socket.on('setName', name => {
@@ -90,20 +105,41 @@ module.exports = server => {
 		})
 
 		socket.on('leaveRoom', () => {
-			if (!user[id].room) return
+			if (!users[id].room) return
 
-			const roomId = user[id].room
+			const roomId = users[id].room
 			const room = rooms[roomId]
 			socket.leave(roomId)
 
 			if (room.members.length <= 1) {
 				delete rooms[roomId]
-				user[id].room = null
+				users[id].room = null
 			} else {
 				room.members.splice(room.members.indexOf(id), 1)
-				user[id].room = null
+				users[id].room = null
 				updatePlayers(roomId)
 			}
+		})
+
+		socket.on('disconnect', () => {
+			const handler = setTimeout(() => {
+				if (!users[id] || !users[id].room) return
+
+				const roomId = users[id].room
+				const room = rooms[roomId]
+				socket.leave(roomId)
+
+				if (room.members.length <= 1) {
+					delete rooms[roomId]
+					users[id].room = null
+				} else {
+					room.members.splice(room.members.indexOf(id), 1)
+					users[id].room = null
+					updatePlayers(roomId)
+				}
+			}, 5000)
+
+			disconnects[id] = handler
 		})
 	})
 }
