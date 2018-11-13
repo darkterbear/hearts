@@ -16,7 +16,7 @@ git clone git@github.com:darkterbear/hearts
 cd hearts/
 ```
 
-Install server dependencies and start the server
+Install server dependencies and start the server, hosted on port 3001
 ```
 cd ./server
 npm i
@@ -27,10 +27,14 @@ Install client dependencies and start React app
 ```
 cd ./client
 npm i
-npm start
 ```
 
-Use `localhost:3000` to access the application
+The client `./src/sockets.js` contains the URL for the server. It is set to `localhost:3001` by default, and the server runs on port 3001. However, if you are hosting the server elsewhere, change the `const URL` in `./src/sockets.js` to the hostname and port of your host.
+
+Start the React application, hosted on port 3000
+```
+npm start
+```
 
 # Built With
 - Express.js
