@@ -95,7 +95,7 @@ module.exports = server => {
 			if (
 				users[id].room ||
 				!rooms[roomId] ||
-				rooms[roomId].members.length > 6 ||
+				rooms[roomId].members.length >= 4 ||
 				!rooms[roomId].open
 			)
 				return
@@ -134,7 +134,7 @@ module.exports = server => {
 			// check if game is ready to start
 			const roomId = users[id].room
 			const room = rooms[roomId]
-			if (room.members.length < 2) return
+			if (room.members.length < 4) return
 			for (var i = 0; i < room.members.length; i++) {
 				var member = users[room.members[i]]
 				if (!member.voted) return
