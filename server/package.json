@@ -1,21 +1,21 @@
 {
 	"name": "ers-server",
 	"version": "0.0.1",
-	"description": "Backend for an online room-based game of Egyptian Ratscrew",
+	"description": "Backend for an online room-based card game: Hearts",
 	"main": "server.js",
 	"scripts": {
 		"test": "node test.js"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/darkterbear/egyptian-rat-screw.git"
+		"url": "git+https://github.com/darkterbear/hearts.git"
 	},
 	"author": "Terrance Li",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/darkterbear/egyptian-rat-screw/issues"
+		"url": "https://github.com/darkterbear/hearts/issues"
 	},
-	"homepage": "https://github.com/darkterbear/egyptian-rat-screw#readme",
+	"homepage": "https://github.com/darkterbear/hearts#readme",
 	"dependencies": {
 		"express": "^4.16.4",
 		"socket.io": "^2.1.1",
