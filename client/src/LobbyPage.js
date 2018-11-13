@@ -23,13 +23,22 @@ export default class LobbyPage extends Component {
 		})
 
 		Socket.on('startGame', () => {
-			console.log('game started')
+			this.props.history.push('/game', {
+				roomId: this.state.roomId,
+				id: this.state.id,
+				players: this.state.players
+			})
 		})
 	}
 
 	handleVoteStart = () => {
 		this.setState({ voted: true })
 		Socket.emit('voteStart')
+	}
+
+	leaveRoom = () => {
+		Socket.emit('leaveRoom')
+		window.location.href = '/'
 	}
 
 	render() {
@@ -42,7 +51,6 @@ export default class LobbyPage extends Component {
 							var cN = ''
 							if (p.id === this.state.id) cN += 'me '
 							if (p.voted) cN += 'ready'
-							console.log(p.id + ' ' + this.state.id)
 							return (
 								<h2 key={p.id} className={cN}>
 									{p.name}
@@ -59,6 +67,12 @@ export default class LobbyPage extends Component {
 					</div>
 				</div>
 				<Logo />
+				<Button
+					enabled={true}
+					style={{ position: 'absolute', top: '1em', right: '1em' }}
+					text="leave room"
+					onClick={this.leaveRoom}
+				/>
 			</div>
 		)
 	}

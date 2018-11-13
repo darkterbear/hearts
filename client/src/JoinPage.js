@@ -34,7 +34,7 @@ export default class JoinPage extends Component {
 	}
 
 	handleBackClick = () => {
-		this.props.history.push('/')
+		window.location.href = '/'
 	}
 
 	render() {
