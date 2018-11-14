@@ -59,14 +59,15 @@ module.exports = server => {
 
 		// send id to client
 		socket.emit('id', id)
+		socket.join(id)
 
 		// handle setId
-		socket.on('setId', oId => {
-			socket.leave(id)
-			id = oId
-			socket.join(oId)
-			clearTimeout(disconnects[oId])
-		})
+		// socket.on('setId', oId => {
+		// 	socket.leave(id)
+		// 	id = oId
+		// 	socket.join(oId)
+		// 	clearTimeout(disconnects[oId])
+		// })
 
 		// handle setName from client
 		socket.on('setName', name => {
