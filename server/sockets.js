@@ -1,9 +1,5 @@
 const Deck = require('./cards').Deck
 
-const hands = new Deck().deal()
-hands[0].sort()
-console.log(hands[0])
-
 /**
  * User schema
  *
@@ -65,9 +61,11 @@ module.exports = server => {
 		socket.emit('id', id)
 
 		// handle setId
-		socket.on('setId', id => {
-			id = id
-			clearTimeout(disconnects[id])
+		socket.on('setId', oId => {
+			socket.leave(id)
+			id = oId
+			socket.join(oId)
+			clearTimeout(disconnects[oId])
 		})
 
 		// handle setName from client
@@ -150,7 +148,12 @@ module.exports = server => {
 			// close the room
 			room.open = false
 
-			io.to(roomId).emit('startGame')
+			// deal the cards
+			const hands = new Deck().deal()
+
+			room.members.forEach((m, i) => {
+				io.to(m).emit('startGame', hands[i])
+			})
 		})
 
 		socket.on('disconnect', () => {
