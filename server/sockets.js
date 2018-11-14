@@ -152,6 +152,7 @@ module.exports = server => {
 			const hands = new Deck().deal()
 
 			room.members.forEach((m, i) => {
+				console.log('startgame')
 				io.to(m).emit('startGame', hands[i])
 			})
 		})
