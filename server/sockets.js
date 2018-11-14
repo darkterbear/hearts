@@ -1,3 +1,9 @@
+const Deck = require('./cards').Deck
+
+const hands = new Deck().deal()
+hands[0].sort()
+console.log(hands[0])
+
 /**
  * User schema
  *

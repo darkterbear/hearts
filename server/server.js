@@ -9,5 +9,5 @@ const server = require('http').Server(app)
 require('./sockets')(server)
 
 server.listen(port, () => {
-	console.log('ERS API is live on port ' + port)
+	console.log('Hearts API is live on port ' + port)
 })
