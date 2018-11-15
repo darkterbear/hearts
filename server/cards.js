@@ -75,12 +75,16 @@ class Deck {
 	}
 
 	deal() {
-		return [
+		const hands = [
 			new Hand(this.cards.slice(0, 13)),
 			new Hand(this.cards.slice(13, 26)),
 			new Hand(this.cards.slice(26, 39)),
 			new Hand(this.cards.slice(39, 52))
 		]
+
+		hands.forEach(h => h.sort())
+
+		return hands
 	}
 }
 
@@ -90,7 +94,11 @@ class Hand {
 	}
 
 	sort() {
-		this.cards.sort((a, b) => (a.suit - b.suit) * 100 + (a.number - b.number))
+		this.cards.sort(
+			(a, b) =>
+				(b.suit - a.suit) * 100 +
+				((a.number === 1 ? 14 : a.number) - (b.number === 1 ? 14 : b.number))
+		)
 	}
 
 	remove(suit, number) {
