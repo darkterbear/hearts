@@ -148,6 +148,9 @@ a.textButton:hover {
 .wrapper .center h2.ready {
   color: #0aca84;
 }
+.wrapper.game {
+  background: #3cb371;
+}
 .wrapper .myCards {
   position: absolute;
   bottom: 0;
