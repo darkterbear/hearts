@@ -48,6 +48,7 @@ html {
 	font-size: 16px;
 	height: 100%;
 	text-align: center;
+	overflow: hidden;
 }
 
 body {
@@ -174,5 +175,59 @@ a.textButton {
 				color: $green;
 			}
 		}
+	}
+
+	.myCards {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 70vw;
+		height: 30vh;
+
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: center;
+		align-items: bottom;
+	}
+
+	.leftCards {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 20vh;
+		height: 80vh;
+	}
+
+	.rightCards {
+		position: absolute;
+		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 20vh;
+		height: 80vh;
+	}
+
+	.acrossCards {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 70vw;
+		height: 20vh;
+	}
+
+	.card {
+		height: 80%;
+		margin-right: -6vh;
+		margin-top: auto;
+
+		&:hover {
+			transform: translateY(-6vh);
+			transition: all 0.3s;
+		}
+
+		transition: all 0.3s;
 	}
 }

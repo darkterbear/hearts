@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import qs from 'query-string'
 import { Logo, Button } from './Components'
 import Socket from './sockets'
 
@@ -22,11 +21,12 @@ export default class LobbyPage extends Component {
 			this.setState({ players })
 		})
 
-		Socket.on('startGame', () => {
+		Socket.on('startGame', hand => {
 			this.props.history.push('/game', {
 				roomId: this.state.roomId,
 				id: this.state.id,
-				players: this.state.players
+				players: this.state.players,
+				hand: hand.cards
 			})
 		})
 	}
