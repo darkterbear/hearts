@@ -193,6 +193,20 @@ a.textButton {
 		flex-direction: row-reverse;
 		justify-content: center;
 		align-items: bottom;
+
+		.card {
+			&:hover {
+				transform: translateY(-6vh);
+				transition: all 0.3s;
+			}
+
+			transform: translateX(-3vh);
+
+			height: 80%;
+			margin-right: -6vh;
+			margin-top: auto;
+			transition: all 0.3s;
+		}
 	}
 
 	.leftCards {
@@ -202,15 +216,39 @@ a.textButton {
 		transform: translateY(-50%);
 		width: 20vh;
 		height: 80vh;
+
+		display: flex;
+		flex-direction: column-reverse;
+		justify-content: center;
+		align-items: left;
+
+		.card {
+			width: 70%;
+			margin-bottom: -16vh;
+
+			transform: translateY(-20vh) rotate(90deg);
+		}
 	}
 
 	.rightCards {
 		position: absolute;
 		right: 0;
 		top: 50%;
-		transform: translateY(-50%);
 		width: 20vh;
 		height: 80vh;
+		transform: translateY(-50%);
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		.card {
+			width: 70%;
+			margin-bottom: -16vh;
+			margin-left: auto;
+
+			transform: translateY(-20vh) rotate(-90deg);
+		}
 	}
 
 	.acrossCards {
@@ -220,18 +258,12 @@ a.textButton {
 		transform: translateX(-50%);
 		width: 70vw;
 		height: 20vh;
-	}
 
-	.card {
-		height: 80%;
-		margin-right: -6vh;
-		margin-top: auto;
-
-		&:hover {
-			transform: translateY(-6vh);
-			transition: all 0.3s;
+		.card {
+			height: 80%;
+			margin-right: -6vh;
+			margin-top: auto;
+			transform: rotate(180deg);
 		}
-
-		transition: all 0.3s;
 	}
 }

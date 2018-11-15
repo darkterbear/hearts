@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 
 export default class Card extends Component {
 	render() {
+		if (this.props.flip) {
+			return <object className="card" data={'/assets/cards/cardback.svg'} />
+		}
 		const suit = (n => {
 			switch (n) {
 				case 0:

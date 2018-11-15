@@ -163,6 +163,17 @@ a.textButton:hover {
   justify-content: center;
   align-items: bottom;
 }
+.wrapper .myCards .card {
+  transform: translateX(-3vh);
+  height: 80%;
+  margin-right: -6vh;
+  margin-top: auto;
+  transition: all 0.3s;
+}
+.wrapper .myCards .card:hover {
+  transform: translateY(-6vh);
+  transition: all 0.3s;
+}
 .wrapper .leftCards {
   position: absolute;
   left: 0;
@@ -170,14 +181,32 @@ a.textButton:hover {
   transform: translateY(-50%);
   width: 20vh;
   height: 80vh;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: left;
+}
+.wrapper .leftCards .card {
+  width: 70%;
+  margin-bottom: -16vh;
+  transform: translateY(-20vh) rotate(90deg);
 }
 .wrapper .rightCards {
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%);
   width: 20vh;
   height: 80vh;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.wrapper .rightCards .card {
+  width: 70%;
+  margin-bottom: -16vh;
+  margin-left: auto;
+  transform: translateY(-20vh) rotate(-90deg);
 }
 .wrapper .acrossCards {
   position: absolute;
@@ -187,15 +216,11 @@ a.textButton:hover {
   width: 70vw;
   height: 20vh;
 }
-.wrapper .card {
+.wrapper .acrossCards .card {
   height: 80%;
   margin-right: -6vh;
   margin-top: auto;
-  transition: all 0.3s;
-}
-.wrapper .card:hover {
-  transform: translateY(-6vh);
-  transition: all 0.3s;
+  transform: rotate(180deg);
 }
 
 /*# sourceMappingURL=styles.css.map */
