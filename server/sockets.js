@@ -1,4 +1,5 @@
 const Deck = require('./cards').Deck
+const CardSuit = require('./cards').CardSuit
 
 /**
  * User schema
@@ -21,7 +22,11 @@ var disconnects = {}
  *
  * 'id': {
  *    members: [id],
- *    open: Boolean
+ *    open: Boolean,
+ *    moveCount: Number, (-1 for haven't started)
+ *    heartsBroken: Boolean,
+ * 		turn: -1,
+ * 		trick: []
  * }
  */
 var rooms = {}
@@ -61,14 +66,6 @@ module.exports = server => {
 		socket.emit('id', id)
 		socket.join(id)
 
-		// handle setId
-		// socket.on('setId', oId => {
-		// 	socket.leave(id)
-		// 	id = oId
-		// 	socket.join(oId)
-		// 	clearTimeout(disconnects[oId])
-		// })
-
 		// handle setName from client
 		socket.on('setName', name => {
 			if (users[id]) return
@@ -89,7 +86,7 @@ module.exports = server => {
 				roomId = hat(6)
 			}
 
-			rooms[roomId] = { members: [id], open: true }
+			rooms[roomId] = { members: [id], open: true, moveCount: -1, heartsBroken: false, turn: 0, trick: [] }
 			users[id].room = roomId
 
 			socket.emit('roomId', roomId)
@@ -148,12 +145,21 @@ module.exports = server => {
 			// game is ready to start
 			// close the room
 			room.open = false
+			room.moveCount = 0
 
 			// deal the cards
 			const hands = new Deck().deal()
 
 			room.members.forEach((m, i) => {
+				m.cards = hands[i].cards
+				
 				io.to(m).emit('startGame', hands[i])
+
+				// check to see if cards contain the 2 of clubs; player with 2 of clubs starts
+				if (m.cards.filter(m => m.number === 2 && m.suit === CardSuit.CLUBS).length > 0) {
+					room.turn = i
+					io.to(m).emit('yourTurn')
+				}
 			})
 		})
 
@@ -174,6 +180,32 @@ module.exports = server => {
 			}, 3000)
 
 			disconnects[id] = handler
+		})
+
+		// GAME MECHANICS
+		socket.on('playCard', card => {
+			const roomId = users[id].room
+			const room = rooms[roomId]
+
+			// return if game hasn't started
+			if (!room.moveCount < 0) return
+
+			// check user's turn
+			if (room.turn !== room.members.indexOf(id)) return
+
+			// check user actually has the card
+
+			// only allow 2 of clubs on first move
+
+			// only allow same suit (if this is not first card of trick)
+
+			// remove card from player
+
+			// check if hearts break
+
+			// increment move
+
+			// make next player's turn
 		})
 	})
 }
