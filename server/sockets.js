@@ -259,15 +259,11 @@ module.exports = server => {
 			// increment move
 			room.moveCount++
 
-			// make next player's turn
-			room.turn++
-			if (room.turn > 3) room.turn = 0
-
 			// if this is last card of trick, clear the trick and add up points
 			if (room.trick.length === 4) {
 				// evaluate the trick
 				const result = evaluateTrick(room.trick)
-				let taker = result.taker + room.turn
+				let taker = result.taker + room.turn + 1
 				if (taker > 3) taker -= 4
 				users[room.members[taker]].points += result.points
 
@@ -275,8 +271,13 @@ module.exports = server => {
 				room.trick.splice(0, 4)
 
 				// make the taker start the next trick
+				room.turn = taker
 				io.to(room.members[taker]).emit('yourTurn')
-			} else io.to(room.members[room.turn]).emit('yourTurn')
+			} else {
+				room.turn++
+				if (room.turn > 3) room.turn = 0
+				io.to(room.members[room.turn]).emit('yourTurn')
+			}
 		})
 	})
 }

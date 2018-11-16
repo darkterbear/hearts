@@ -35,6 +35,12 @@ export default class GamePage extends Component {
 		Socket.on('cardPlayed', (card, player) => {
 			if (player === this.state.id) {
 				// player is meeee
+				// remove card from state.cards
+				this.setState({
+					cards: this.state.cards
+						.slice()
+						.filter(c => !(c.suit === card.suit && c.number === card.number))
+				})
 			} else {
 				// player is not meeee
 			}
