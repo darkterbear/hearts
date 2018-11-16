@@ -3,6 +3,10 @@ const Deck = cardsLib.Deck
 const CardSuit = cardsLib.CardSuit
 const evaluateTrick = cardsLib.evaluateTrick
 
+const sleep = ms => {
+	return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 /**
  * User schema
  *
@@ -199,7 +203,8 @@ module.exports = server => {
 		})
 
 		// GAME MECHANICS
-		socket.on('playCard', card => {
+		socket.on('playCard', async card => {
+			if (!users[id]) return
 			const roomId = users[id].room
 			const room = rooms[roomId]
 
@@ -262,8 +267,12 @@ module.exports = server => {
 				if (taker > 3) taker -= 4
 				users[room.members[taker]].points += result.points
 
+				io.to(roomId).emit('pointsChanged', taker, result.points)
+
+				await sleep(2000)
 				// clear the trick
 				room.trick.splice(0, 4)
+				io.to(roomId).emit('clearTrick')
 
 				// make the taker start the next trick
 				room.turn = taker

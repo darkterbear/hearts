@@ -19,7 +19,8 @@ export default class GamePage extends Component {
 			acrossCards: opponentStartCards.slice(),
 			leftCards: opponentStartCards.slice(),
 			rightCards: opponentStartCards.slice(),
-			myTurn: false
+			myTurn: false,
+			playedCards: []
 		}
 
 		Socket.on('yourTurn', () => {
@@ -30,14 +31,27 @@ export default class GamePage extends Component {
 			this.setState({ myTurn: false })
 		})
 
+		Socket.on('clearTrick', () => {
+			this.setState({ playedCards: [] })
+		})
+
+		Socket.on('pointsChanged', (taker, points) => {
+			var players = this.state.players.slice()
+			players[taker].points += points
+			this.setState({ players })
+		})
+
 		Socket.on('cardPlayed', (card, player) => {
 			if (player === this.state.id) {
 				// player is meeee
 				// remove card from state.cards
+				var playedCards = this.state.playedCards.slice()
+				playedCards[0] = card
 				this.setState({
 					cards: this.state.cards
 						.slice()
-						.filter(c => !(c.suit === card.suit && c.number === card.number))
+						.filter(c => !(c.suit === card.suit && c.number === card.number)),
+					playedCards
 				})
 			} else {
 				// player is not meeee
@@ -45,33 +59,36 @@ export default class GamePage extends Component {
 				const playerIds = this.state.players.map(p => p.id)
 				const myIndex = playerIds.indexOf(this.state.id)
 				const playerIndex = playerIds.indexOf(player)
-				console.log(myIndex + ' ' + playerIndex)
 
 				var normalizedPlayerIndex = playerIndex + (4 - myIndex)
 				if (normalizedPlayerIndex > 3) normalizedPlayerIndex -= 4
 
-				console.log(normalizedPlayerIndex)
+				var playedCards = this.state.playedCards.slice()
+				playedCards[normalizedPlayerIndex] = card
 
 				switch (normalizedPlayerIndex) {
 					case 1:
 						this.setState({
 							leftCards: this.state.leftCards
 								.slice()
-								.splice(0, this.state.leftCards.length - 1)
+								.splice(0, this.state.leftCards.length - 1),
+							playedCards
 						})
 						break
 					case 2:
 						this.setState({
 							acrossCards: this.state.acrossCards
 								.slice()
-								.splice(0, this.state.acrossCards.length - 1)
+								.splice(0, this.state.acrossCards.length - 1),
+							playedCards
 						})
 						break
 					case 3:
 						this.setState({
 							rightCards: this.state.rightCards
 								.slice()
-								.splice(0, this.state.rightCards.length - 1)
+								.splice(0, this.state.rightCards.length - 1),
+							playedCards
 						})
 						break
 				}
@@ -96,34 +113,112 @@ export default class GamePage extends Component {
 					)
 			  })
 			: null
+
+		const myCard = this.state.playedCards[0]
+		const leftCard = this.state.playedCards[1]
+		const acrossCard = this.state.playedCards[2]
+		const rightCard = this.state.playedCards[3]
+
+		const cardToFilename = card => {
+			const suit = (suit => {
+				switch (suit) {
+					case 0:
+						return 'h'
+					case 1:
+						return 's'
+					case 2:
+						return 'c'
+					case 3:
+						return 'd'
+				}
+			})(card.suit)
+
+			let number = card.number
+			if (number < 10) number = '0' + number
+			else number = '' + number
+
+			return suit + number
+		}
+
+		const myIndex = this.state.players.map(p => p.id).indexOf(this.state.id)
+
 		return (
 			<div className="wrapper game">
 				<div className="myCards">
+					<h2 className="message">
+						{this.state.players[
+							this.state.players.map(p => p.id).indexOf(this.state.id)
+						].points + ' points '}
+					</h2>
 					{this.state.myTurn && <h2 className="message">your turn!</h2>}
 					{cards}
 				</div>
-				<div className="leftCards">{this.state.leftCards}</div>
-				<div className="rightCards">{this.state.rightCards}</div>
-				<div className="acrossCards">{this.state.acrossCards}</div>
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'center',
-						alignItems: 'center'
-					}}>
-					<img className="leftCard" src={'/assets/cards/cardback.svg'} />
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'column',
-							justifyContent: 'center',
-							alignItems: 'center'
-						}}>
-						<img className="acrossCard" src={'/assets/cards/cardback.svg'} />
-						<img className="myCard" src={'/assets/cards/cardback.svg'} />
+				<div className="leftCards">
+					<h2 className="sideScoreIndicator">
+						{this.state.players[myIndex + 1 > 3 ? 0 : myIndex + 1].name + ': '}
+						{this.state.players[myIndex + 1 > 3 ? 0 : myIndex + 1].points}
+					</h2>
+					{this.state.leftCards}
+				</div>
+				<div className="rightCards">
+					<h2 className="sideScoreIndicator">
+						{this.state.players[myIndex + 3 > 3 ? myIndex + 3 - 4 : myIndex + 3]
+							.name + ': '}
+						{
+							this.state.players[
+								myIndex + 3 > 3 ? myIndex + 3 - 4 : myIndex + 3
+							].points
+						}
+					</h2>
+					{this.state.rightCards}
+				</div>
+				<div className="acrossCards">
+					<h2 className="topScoreIndicator">
+						{this.state.players[myIndex + 2 > 3 ? myIndex + 2 - 4 : myIndex + 2]
+							.name + ': '}
+						{
+							this.state.players[
+								myIndex + 2 > 3 ? myIndex + 2 - 4 : myIndex + 2
+							].points
+						}
+					</h2>
+					{this.state.acrossCards}
+				</div>
+				<div className="playedCards">
+					<img
+						className="leftCard"
+						src={
+							leftCard
+								? '/assets/cards/' + cardToFilename(leftCard) + '.svg'
+								: '/assets/cards/blank.svg'
+						}
+					/>
+					<div className="playedCardsVert">
+						<img
+							className="acrossCard"
+							src={
+								acrossCard
+									? '/assets/cards/' + cardToFilename(acrossCard) + '.svg'
+									: '/assets/cards/blank.svg'
+							}
+						/>
+						<img
+							className="myCard"
+							src={
+								myCard
+									? '/assets/cards/' + cardToFilename(myCard) + '.svg'
+									: '/assets/cards/blank.svg'
+							}
+						/>
 					</div>
-					<img className="rightCard" src={'/assets/cards/cardback.svg'} />
+					<img
+						className="rightCard"
+						src={
+							rightCard
+								? '/assets/cards/' + cardToFilename(rightCard) + '.svg'
+								: '/assets/cards/blank.svg'
+						}
+					/>
 				</div>
 			</div>
 		)

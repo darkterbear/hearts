@@ -234,7 +234,7 @@ a.textButton {
 			width: 70%;
 			margin-bottom: -16vh;
 
-			transform: translateY(-20vh) rotate(90deg);
+			transform: translateY(-16vh) rotate(90deg);
 		}
 	}
 
@@ -255,8 +255,24 @@ a.textButton {
 			margin-bottom: -16vh;
 			margin-left: auto;
 
-			transform: translateY(-20vh) rotate(-90deg);
+			transform: translateY(-16vh) rotate(-90deg);
 		}
+	}
+
+	.sideScoreIndicator {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		color: white;
+	}
+
+	.topScoreIndicator {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%) translateY(4vh);
+		color: white;
 	}
 
 	.acrossCards {
@@ -285,5 +301,19 @@ a.textButton {
 		transform: rotate(-90deg);
 	}
 	.myCard {
+	}
+
+	.playedCards {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+
+		.playedCardsVert {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 }

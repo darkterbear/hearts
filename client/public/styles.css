@@ -196,7 +196,7 @@ a.textButton:hover {
 .wrapper .leftCards .card {
   width: 70%;
   margin-bottom: -16vh;
-  transform: translateY(-20vh) rotate(90deg);
+  transform: translateY(-16vh) rotate(90deg);
 }
 .wrapper .rightCards {
   position: absolute;
@@ -213,7 +213,21 @@ a.textButton:hover {
   width: 70%;
   margin-bottom: -16vh;
   margin-left: auto;
-  transform: translateY(-20vh) rotate(-90deg);
+  transform: translateY(-16vh) rotate(-90deg);
+}
+.wrapper .sideScoreIndicator {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+}
+.wrapper .topScoreIndicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(4vh);
+  color: white;
 }
 .wrapper .acrossCards {
   position: absolute;
@@ -237,6 +251,18 @@ a.textButton:hover {
 }
 .wrapper .rightCard {
   transform: rotate(-90deg);
+}
+.wrapper .playedCards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper .playedCards .playedCardsVert {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /*# sourceMappingURL=styles.css.map */
