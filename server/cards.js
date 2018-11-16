@@ -151,5 +151,6 @@ const evaluateTrick = cards => {
 module.exports = {
 	CardSuit,
 	Card,
-	Deck
+	Deck,
+	evaluateTrick
 }

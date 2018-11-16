@@ -196,7 +196,7 @@ a.textButton {
 
 		.card {
 			&:hover {
-				transform: translateY(-6vh);
+				transform: translateX(-3vh) translateY(-6vh);
 				transition: all 0.3s;
 			}
 
@@ -206,6 +206,14 @@ a.textButton {
 			margin-right: -6vh;
 			margin-top: auto;
 			transition: all 0.3s;
+		}
+
+		.message {
+			color: white;
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 

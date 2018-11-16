@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import qs from 'query-string'
 import { Logo, Button, BackButton } from './Components'
 import Socket from './sockets'
 
@@ -13,8 +12,6 @@ export default class JoinPage extends Component {
 			roomId: '',
 			id: bundle.id
 		}
-
-		Socket.emit('setId', bundle.id)
 
 		Socket.on('updatePlayers', players => {
 			this.props.history.push('/lobby', {

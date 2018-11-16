@@ -1,5 +1,7 @@
-const Deck = require('./cards').Deck
-const CardSuit = require('./cards').CardSuit
+const cardsLib = require('./cards')
+const Deck = cardsLib.Deck
+const CardSuit = cardsLib.CardSuit
+const evaluateTrick = cardsLib.evaluateTrick
 
 /**
  * User schema
@@ -7,7 +9,9 @@ const CardSuit = require('./cards').CardSuit
  * 'id': {
  *    name: String,
  *    room: String,
- *    voted: Boolean
+ *    voted: Boolean,
+ *    hand: [Card],
+ *    points: Number
  * }
  */
 var users = {}
@@ -26,7 +30,7 @@ var disconnects = {}
  *    moveCount: Number, (-1 for haven't started)
  *    heartsBroken: Boolean,
  * 		turn: -1,
- * 		trick: []
+ * 		trick: [Card]
  * }
  */
 var rooms = {}
@@ -73,7 +77,9 @@ module.exports = server => {
 			users[id] = {
 				name,
 				room: null,
-				voted: false
+				voted: false,
+				hand: [],
+				points: 0
 			}
 		})
 
@@ -86,7 +92,14 @@ module.exports = server => {
 				roomId = hat(6)
 			}
 
-			rooms[roomId] = { members: [id], open: true, moveCount: -1, heartsBroken: false, turn: 0, trick: [] }
+			rooms[roomId] = {
+				members: [id],
+				open: true,
+				moveCount: -1,
+				heartsBroken: false,
+				turn: 0,
+				trick: []
+			}
 			users[id].room = roomId
 
 			socket.emit('roomId', roomId)
@@ -111,7 +124,7 @@ module.exports = server => {
 		})
 
 		socket.on('leaveRoom', () => {
-			if (!users[id].room) return
+			if (!users[id] || !users[id].room) return
 
 			const roomId = users[id].room
 			const room = rooms[roomId]
@@ -151,12 +164,15 @@ module.exports = server => {
 			const hands = new Deck().deal()
 
 			room.members.forEach((m, i) => {
-				m.cards = hands[i].cards
-				
+				users[m].hand = hands[i].cards
+
 				io.to(m).emit('startGame', hands[i])
 
 				// check to see if cards contain the 2 of clubs; player with 2 of clubs starts
-				if (m.cards.filter(m => m.number === 2 && m.suit === CardSuit.CLUBS).length > 0) {
+				if (
+					users[m].hand.filter(m => m.number === 2 && m.suit === CardSuit.CLUBS)
+						.length > 0
+				) {
 					room.turn = i
 					io.to(m).emit('yourTurn')
 				}
@@ -188,24 +204,77 @@ module.exports = server => {
 			const room = rooms[roomId]
 
 			// return if game hasn't started
+			console.log('checking if movecount < 0')
 			if (!room.moveCount < 0) return
 
 			// check user's turn
+			console.log("checking if player's turn")
 			if (room.turn !== room.members.indexOf(id)) return
 
+			var hand = users[id].hand
+
 			// check user actually has the card
+			console.log('checking if player has card')
+			let cardIndex = hand.length - 1
+			for (; cardIndex >= 0; cardIndex--) {
+				const thisCard = hand[cardIndex]
+				if (thisCard.number === card.number && thisCard.suit === card.suit)
+					break
+			}
+			if (cardIndex < 0) return
 
 			// only allow 2 of clubs on first move
+			console.log('checking if 2 of clubs on first move')
+			if (
+				room.moveCount === 0 &&
+				(card.number !== 2 || card.suit !== CardSuit.CLUBS)
+			)
+				return
 
-			// only allow same suit (if this is not first card of trick)
+			// only allow same suit (if this is not first card of trick, and if the player has cards of that suit)
+			console.log('same suit or hearts broken')
+			if (room.trick.length > 0) {
+				const firstCard = room.trick[0]
 
-			// remove card from player
+				if (firstCard.suit !== card.suit) {
+					// return if player has more cards of this suit
+					if (hand.filter(c => c.suit === firstCard.suit).length > 0) return
+				}
+			} else {
+				// if first card of trick, check if is hearts if hearts havent been broken
+				if (card.suit === CardSuit.HEARTS && !room.heartsBroken) return
+			}
+
+			// remove card from player and add to trick
+			room.trick.push(hand.splice(cardIndex, 1))
+
+			// emit to sockets
+			io.to(roomId).emit('cardPlayed', card, id)
+			socket.emit('turnEnd')
 
 			// check if hearts break
+			if (!room.heartsBroken && card.suit === CardSuit.HEARTS)
+				room.heartsBroken = true
 
 			// increment move
+			room.moveCount++
 
 			// make next player's turn
+			room.turn++
+			if (room.turn > 3) room.turn = 0
+			io.to(room.members[room.turn]).emit('yourTurn')
+
+			// if this is last card of trick, clear the trick and add up points
+			if (room.trick.length === 4) {
+				// evaluate the trick
+				const result = evaluateTrick(room.trick)
+				let taker = result.taker + room.turn
+				if (taker > 3) taker -= 4
+				users[room.members[taker]].points += result.points
+
+				// clear the trick
+				room.trick.splice(0, 4)
+			}
 		})
 	})
 }

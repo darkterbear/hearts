@@ -3,7 +3,11 @@ import React, { Component } from 'react'
 export default class Card extends Component {
 	render() {
 		if (this.props.flip) {
-			return <object className="card" data={'/assets/cards/cardback.svg'} />
+			return (
+				<object className="card" data={'/assets/cards/cardback.svg'}>
+					cardback
+				</object>
+			)
 		}
 		const suit = (n => {
 			switch (n) {
@@ -15,6 +19,8 @@ export default class Card extends Component {
 					return 'c'
 				case 3:
 					return 'd'
+				default:
+					return 'c'
 			}
 		})(this.props.suit)
 		const number =
@@ -22,9 +28,10 @@ export default class Card extends Component {
 				? '0' + this.props.number
 				: this.props.number.toString()
 		return (
-			<object
+			<img
+				onClick={this.props.onClick}
 				className="card"
-				data={'/assets/cards/' + suit + number + '.svg'}
+				src={'/assets/cards/' + suit + number + '.svg'}
 			/>
 		)
 	}

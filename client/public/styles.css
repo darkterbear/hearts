@@ -171,8 +171,15 @@ a.textButton:hover {
   transition: all 0.3s;
 }
 .wrapper .myCards .card:hover {
-  transform: translateY(-6vh);
+  transform: translateX(-3vh) translateY(-6vh);
   transition: all 0.3s;
+}
+.wrapper .myCards .message {
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .wrapper .leftCards {
   position: absolute;

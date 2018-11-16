@@ -15,8 +15,6 @@ export default class LobbyPage extends Component {
 			voted: false
 		}
 
-		Socket.emit('setId', bundle.id)
-
 		Socket.on('updatePlayers', players => {
 			this.setState({ players })
 		})
