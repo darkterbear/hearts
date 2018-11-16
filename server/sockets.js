@@ -246,7 +246,7 @@ module.exports = server => {
 			}
 
 			// remove card from player and add to trick
-			room.trick.push(hand.splice(cardIndex, 1))
+			room.trick.push(hand.splice(cardIndex, 1)[0])
 
 			// emit to sockets
 			io.to(roomId).emit('cardPlayed', card, id)
@@ -262,7 +262,6 @@ module.exports = server => {
 			// make next player's turn
 			room.turn++
 			if (room.turn > 3) room.turn = 0
-			io.to(room.members[room.turn]).emit('yourTurn')
 
 			// if this is last card of trick, clear the trick and add up points
 			if (room.trick.length === 4) {
@@ -274,7 +273,10 @@ module.exports = server => {
 
 				// clear the trick
 				room.trick.splice(0, 4)
-			}
+
+				// make the taker start the next trick
+				io.to(room.members[taker]).emit('yourTurn')
+			} else io.to(room.members[room.turn]).emit('yourTurn')
 		})
 	})
 }

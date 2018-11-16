@@ -133,7 +133,7 @@ const evaluateTrick = cards => {
 
 		if (card.suit !== suit) continue
 
-		const weightedNumber = card.number
+		let weightedNumber = card.number
 		if (weightedNumber === 1) weightedNumber = 14
 
 		if (weightedNumber > highestNumOfSuit) {
