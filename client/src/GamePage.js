@@ -23,12 +23,10 @@ export default class GamePage extends Component {
 		}
 
 		Socket.on('yourTurn', () => {
-			console.log('your turn!')
 			this.setState({ myTurn: true })
 		})
 
 		Socket.on('turnEnd', () => {
-			console.log('your turn ended')
 			this.setState({ myTurn: false })
 		})
 
@@ -43,12 +41,45 @@ export default class GamePage extends Component {
 				})
 			} else {
 				// player is not meeee
+
+				const playerIds = this.state.players.map(p => p.id)
+				const myIndex = playerIds.indexOf(this.state.id)
+				const playerIndex = playerIds.indexOf(player)
+				console.log(myIndex + ' ' + playerIndex)
+
+				var normalizedPlayerIndex = playerIndex + (4 - myIndex)
+				if (normalizedPlayerIndex > 3) normalizedPlayerIndex -= 4
+
+				console.log(normalizedPlayerIndex)
+
+				switch (normalizedPlayerIndex) {
+					case 1:
+						this.setState({
+							leftCards: this.state.leftCards
+								.slice()
+								.splice(0, this.state.leftCards.length - 1)
+						})
+						break
+					case 2:
+						this.setState({
+							acrossCards: this.state.acrossCards
+								.slice()
+								.splice(0, this.state.acrossCards.length - 1)
+						})
+						break
+					case 3:
+						this.setState({
+							rightCards: this.state.rightCards
+								.slice()
+								.splice(0, this.state.rightCards.length - 1)
+						})
+						break
+				}
 			}
 		})
 	}
 
 	onCardSelect(card) {
-		console.log('card selected: ' + card.suit + ' ' + card.number)
 		Socket.emit('playCard', card)
 	}
 

@@ -204,17 +204,14 @@ module.exports = server => {
 			const room = rooms[roomId]
 
 			// return if game hasn't started
-			console.log('checking if movecount < 0')
 			if (!room.moveCount < 0) return
 
 			// check user's turn
-			console.log("checking if player's turn")
 			if (room.turn !== room.members.indexOf(id)) return
 
 			var hand = users[id].hand
 
 			// check user actually has the card
-			console.log('checking if player has card')
 			let cardIndex = hand.length - 1
 			for (; cardIndex >= 0; cardIndex--) {
 				const thisCard = hand[cardIndex]
@@ -224,7 +221,6 @@ module.exports = server => {
 			if (cardIndex < 0) return
 
 			// only allow 2 of clubs on first move
-			console.log('checking if 2 of clubs on first move')
 			if (
 				room.moveCount === 0 &&
 				(card.number !== 2 || card.suit !== CardSuit.CLUBS)
@@ -232,7 +228,6 @@ module.exports = server => {
 				return
 
 			// only allow same suit (if this is not first card of trick, and if the player has cards of that suit)
-			console.log('same suit or hearts broken')
 			if (room.trick.length > 0) {
 				const firstCard = room.trick[0]
 
