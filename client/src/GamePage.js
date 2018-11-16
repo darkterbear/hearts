@@ -105,6 +105,26 @@ export default class GamePage extends Component {
 				<div className="leftCards">{this.state.leftCards}</div>
 				<div className="rightCards">{this.state.rightCards}</div>
 				<div className="acrossCards">{this.state.acrossCards}</div>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}>
+					<img className="leftCard" src={'/assets/cards/cardback.svg'} />
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'center',
+							alignItems: 'center'
+						}}>
+						<img className="acrossCard" src={'/assets/cards/cardback.svg'} />
+						<img className="myCard" src={'/assets/cards/cardback.svg'} />
+					</div>
+					<img className="rightCard" src={'/assets/cards/cardback.svg'} />
+				</div>
 			</div>
 		)
 	}

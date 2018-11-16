@@ -274,4 +274,16 @@ a.textButton {
 			transform: rotate(180deg);
 		}
 	}
+
+	.leftCard {
+		transform: rotate(90deg);
+	}
+	.acrossCard {
+		transform: rotate(180deg);
+	}
+	.rightCard {
+		transform: rotate(-90deg);
+	}
+	.myCard {
+	}
 }

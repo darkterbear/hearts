@@ -229,5 +229,14 @@ a.textButton:hover {
   margin-top: auto;
   transform: rotate(180deg);
 }
+.wrapper .leftCard {
+  transform: rotate(90deg);
+}
+.wrapper .acrossCard {
+  transform: rotate(180deg);
+}
+.wrapper .rightCard {
+  transform: rotate(-90deg);
+}
 
 /*# sourceMappingURL=styles.css.map */
