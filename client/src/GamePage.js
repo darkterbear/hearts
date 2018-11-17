@@ -24,6 +24,16 @@ export default class GamePage extends Component {
 			playedCards: []
 		}
 
+		Socket.on('gameOver', () => {
+			// received gameover
+			console.log('received gameover')
+			this.props.history.push('/lobby', {
+				roomId: this.state.roomId,
+				id: this.state.id,
+				players: this.state.players
+			})
+		})
+
 		Socket.on('highlightCard', taker => {
 			const playerIds = this.state.players.map(p => p.id)
 			const myIndex = playerIds.indexOf(this.state.id)
@@ -31,7 +41,6 @@ export default class GamePage extends Component {
 			var normalizedPlayerIndex = taker + (4 - myIndex)
 			if (normalizedPlayerIndex > 3) normalizedPlayerIndex -= 4
 
-			console.log('highlight ' + normalizedPlayerIndex)
 			this.setState({ highlightedCard: normalizedPlayerIndex })
 		})
 
@@ -58,7 +67,6 @@ export default class GamePage extends Component {
 		})
 
 		Socket.on('clearTrick', () => {
-			console.log('clear highlight')
 			this.setState({ playedCards: [], highlightedCard: -1 })
 		})
 

@@ -163,12 +163,16 @@ module.exports = server => {
 			// close the room
 			room.open = false
 			room.moveCount = 0
+			room.heartsBroken = false
+			room.turn = -1
+			room.trick = []
 
 			// deal the cards
 			const hands = new Deck().deal()
 
 			room.members.forEach((m, i) => {
 				users[m].hand = hands[i].cards
+				users[m].points = 0
 
 				io.to(m).emit('startGame', hands[i])
 
@@ -275,6 +279,15 @@ module.exports = server => {
 				// clear the trick
 				room.trick.splice(0, 4)
 				io.to(roomId).emit('clearTrick')
+
+				// check if game is over
+				console.log('move ' + room.moveCount)
+				if (room.moveCount >= 52) {
+					console.log('sent gameover')
+					room.members.forEach(mId => (users[mId].voted = false))
+					io.to(roomId, 'gameOver')
+					return
+				}
 
 				// make the taker start the next trick
 				room.turn = taker

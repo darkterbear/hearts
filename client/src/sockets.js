@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 
-const URL = 'http://192.168.0.109:3001'
+const URL = 'https://hearts.terranceli.com'
 
 const Socket = io(URL)
 
