@@ -52,6 +52,11 @@ const hat = length => {
 module.exports = server => {
 	const io = require('socket.io')(server)
 
+	io.origins((origin, cb) => {
+		console.log(origin)
+		callback(null, true)
+	})
+
 	const updatePlayers = roomId => {
 		io.to(roomId).emit(
 			'updatePlayers',
