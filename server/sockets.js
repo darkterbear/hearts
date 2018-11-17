@@ -266,21 +266,25 @@ module.exports = server => {
 				let taker = result.taker + room.turn + 1
 				if (taker > 3) taker -= 4
 				users[room.members[taker]].points += result.points
+				io.to(roomId).emit('highlightCard', taker)
+
+				await sleep(2000)
 
 				io.to(roomId).emit('pointsChanged', taker, result.points)
 
-				await sleep(2000)
 				// clear the trick
 				room.trick.splice(0, 4)
 				io.to(roomId).emit('clearTrick')
 
 				// make the taker start the next trick
 				room.turn = taker
-				io.to(room.members[taker]).emit('yourTurn')
+				io.to(roomId).emit('changeTurn', taker)
+				// io.to(room.members[taker]).emit('yourTurn')
 			} else {
 				room.turn++
 				if (room.turn > 3) room.turn = 0
-				io.to(room.members[room.turn]).emit('yourTurn')
+				io.to(roomId).emit('changeTurn', room.turn)
+				// io.to(room.members[room.turn]).emit('yourTurn')
 			}
 		})
 	})

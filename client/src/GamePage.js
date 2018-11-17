@@ -19,9 +19,35 @@ export default class GamePage extends Component {
 			acrossCards: opponentStartCards.slice(),
 			leftCards: opponentStartCards.slice(),
 			rightCards: opponentStartCards.slice(),
+			highlightedCard: -1,
 			myTurn: false,
 			playedCards: []
 		}
+
+		Socket.on('highlightCard', taker => {
+			const playerIds = this.state.players.map(p => p.id)
+			const myIndex = playerIds.indexOf(this.state.id)
+
+			var normalizedPlayerIndex = taker + (4 - myIndex)
+			if (normalizedPlayerIndex > 3) normalizedPlayerIndex -= 4
+
+			console.log('highlight ' + normalizedPlayerIndex)
+			this.setState({ highlightedCard: normalizedPlayerIndex })
+		})
+
+		Socket.on('changeTurn', taker => {
+			if (this.state.players[taker].id === this.state.id) {
+				this.setState({ myTurn: true, turn: -1 })
+			} else {
+				const playerIds = this.state.players.map(p => p.id)
+				const myIndex = playerIds.indexOf(this.state.id)
+
+				var normalizedPlayerIndex = taker + (4 - myIndex)
+				if (normalizedPlayerIndex > 3) normalizedPlayerIndex -= 4
+
+				this.setState({ turn: normalizedPlayerIndex })
+			}
+		})
 
 		Socket.on('yourTurn', () => {
 			this.setState({ myTurn: true })
@@ -32,7 +58,8 @@ export default class GamePage extends Component {
 		})
 
 		Socket.on('clearTrick', () => {
-			this.setState({ playedCards: [] })
+			console.log('clear highlight')
+			this.setState({ playedCards: [], highlightedCard: -1 })
 		})
 
 		Socket.on('pointsChanged', (taker, points) => {
@@ -148,20 +175,27 @@ export default class GamePage extends Component {
 					<h2 className="message">
 						{this.state.players[
 							this.state.players.map(p => p.id).indexOf(this.state.id)
-						].points + ' points '}
+						].points +
+							' points' +
+							(this.state.myTurn ? '; your turn!' : '')}
 					</h2>
-					{this.state.myTurn && <h2 className="message">your turn!</h2>}
 					{cards}
 				</div>
 				<div className="leftCards">
-					<h2 className="sideScoreIndicator">
+					<h2
+						className={
+							'sideScoreIndicator' + (this.state.turn === 1 ? ' turn' : '')
+						}>
 						{this.state.players[myIndex + 1 > 3 ? 0 : myIndex + 1].name + ': '}
 						{this.state.players[myIndex + 1 > 3 ? 0 : myIndex + 1].points}
 					</h2>
 					{this.state.leftCards}
 				</div>
 				<div className="rightCards">
-					<h2 className="sideScoreIndicator">
+					<h2
+						className={
+							'sideScoreIndicator' + (this.state.turn === 3 ? ' turn' : '')
+						}>
 						{this.state.players[myIndex + 3 > 3 ? myIndex + 3 - 4 : myIndex + 3]
 							.name + ': '}
 						{
@@ -173,7 +207,10 @@ export default class GamePage extends Component {
 					{this.state.rightCards}
 				</div>
 				<div className="acrossCards">
-					<h2 className="topScoreIndicator">
+					<h2
+						className={
+							'topScoreIndicator' + (this.state.turn === 2 ? ' turn' : '')
+						}>
 						{this.state.players[myIndex + 2 > 3 ? myIndex + 2 - 4 : myIndex + 2]
 							.name + ': '}
 						{
@@ -186,7 +223,10 @@ export default class GamePage extends Component {
 				</div>
 				<div className="playedCards">
 					<img
-						className="leftCard"
+						className={
+							'leftCard' +
+							(this.state.highlightedCard === 1 ? ' highlight' : '')
+						}
 						src={
 							leftCard
 								? '/assets/cards/' + cardToFilename(leftCard) + '.svg'
@@ -195,7 +235,10 @@ export default class GamePage extends Component {
 					/>
 					<div className="playedCardsVert">
 						<img
-							className="acrossCard"
+							className={
+								'acrossCard' +
+								(this.state.highlightedCard === 2 ? ' highlight' : '')
+							}
 							src={
 								acrossCard
 									? '/assets/cards/' + cardToFilename(acrossCard) + '.svg'
@@ -203,7 +246,10 @@ export default class GamePage extends Component {
 							}
 						/>
 						<img
-							className="myCard"
+							className={
+								'myCard' +
+								(this.state.highlightedCard === 0 ? ' highlight' : '')
+							}
 							src={
 								myCard
 									? '/assets/cards/' + cardToFilename(myCard) + '.svg'
@@ -212,7 +258,10 @@ export default class GamePage extends Component {
 						/>
 					</div>
 					<img
-						className="rightCard"
+						className={
+							'rightCard' +
+							(this.state.highlightedCard === 3 ? ' highlight' : '')
+						}
 						src={
 							rightCard
 								? '/assets/cards/' + cardToFilename(rightCard) + '.svg'

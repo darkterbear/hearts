@@ -217,6 +217,7 @@ a.textButton:hover {
 }
 .wrapper .sideScoreIndicator {
   position: absolute;
+  width: 100%;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -243,6 +244,10 @@ a.textButton:hover {
   margin-top: auto;
   transform: rotate(180deg);
 }
+.wrapper .highlight {
+  border: 6px #527aff solid;
+  border-radius: 16px;
+}
 .wrapper .leftCard {
   transform: rotate(90deg);
 }
@@ -251,6 +256,9 @@ a.textButton:hover {
 }
 .wrapper .rightCard {
   transform: rotate(-90deg);
+}
+.wrapper .turn {
+  text-decoration: underline;
 }
 .wrapper .playedCards {
   display: flex;

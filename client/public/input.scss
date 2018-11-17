@@ -261,6 +261,7 @@ a.textButton {
 
 	.sideScoreIndicator {
 		position: absolute;
+		width: 100%;
 		top: 0;
 		left: 50%;
 		transform: translateX(-50%);
@@ -291,6 +292,11 @@ a.textButton {
 		}
 	}
 
+	.highlight {
+		border: 6px $blue solid;
+		border-radius: 16px;
+	}
+
 	.leftCard {
 		transform: rotate(90deg);
 	}
@@ -301,6 +307,10 @@ a.textButton {
 		transform: rotate(-90deg);
 	}
 	.myCard {
+	}
+
+	.turn {
+		text-decoration: underline;
 	}
 
 	.playedCards {
