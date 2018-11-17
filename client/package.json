@@ -16,7 +16,8 @@
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
 		"redeploy": "git reset --hard && git pull -X theirs && react-scripts build",
-		"deploy": "git reset --hard && git pull -X theirs && react-scripts build && serve -s -p 5001 build/"
+		"deploy": "git reset --hard && git pull -X theirs && react-scripts build && serve -s -p 5001 build/",
+		"stop": "pm2 delete hearts-server"
 	},
 	"browserslist": [
 		">0.2%",
