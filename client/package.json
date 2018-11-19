@@ -1,5 +1,5 @@
 {
-	"name": "ers-client",
+	"name": "hearts-client",
 	"version": "0.0.1",
 	"dependencies": {
 		"query-string": "^6.2.0",
