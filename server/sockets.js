@@ -50,7 +50,7 @@ const hat = length => {
 }
 
 module.exports = server => {
-	const io = require('socket.io')(server)
+  const io = require('socket.io')(server, { origins: 'hearts.terranceli.com', 'https://hearts.terranceli.com', 'http://localhost:3000'})
 
 	io.origins((origin, cb) => {
 		console.log(origin)
