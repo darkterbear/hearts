@@ -3,26 +3,15 @@
 const app = require('express')()
 const port = 3001
 
-const server = require('http').Server(app)
-
-app.use((req, res, next) => {
-	// var allowedOrigins = [
-	// 	'http://localhost:3000',
-	// 	'https://hearts.terranceli.com'
-	// ]
-	var origin = req.headers.origin
-
-	// if (allowedOrigins.indexOf(origin) > -1) {
-
-	// }
-	res.setHeader('Access-Control-Allow-Origin', origin)
-	res.header('Access-Control-Allow-Credentials', 'true')
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	)
+app.use(function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*')
+	res.header('Access-Control-Allow-Headers', 'X-Requested-With')
+	res.header('Access-Control-Allow-Headers', 'Content-Type')
+	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS')
 	next()
 })
+
+const server = require('http').Server(app)
 
 // attach socket.io api
 require('./sockets')(server)
