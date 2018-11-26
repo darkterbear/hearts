@@ -82,7 +82,10 @@ a.textButton:hover {
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: #527aff;
   color: white;
   border-radius: 2em;

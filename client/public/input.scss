@@ -98,7 +98,10 @@ a.textButton {
 .button {
 	@include noselect();
 	cursor: pointer;
-	display: inline-block;
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	background: $blue;
 	color: white;
 	border-radius: 2em;
