@@ -22,7 +22,7 @@
 	"homepage": "https://github.com/darkterbear/hearts#readme",
 	"dependencies": {
 		"express": "^4.16.4",
-		"socket.io": "^2.1.1",
+		"socket.io": "^2.4.0",
 		"socket.io-client": "^2.1.1"
 	}
 }
