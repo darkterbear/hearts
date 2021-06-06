@@ -5,10 +5,7 @@
 	"main": "server.js",
 	"scripts": {
 		"test": "node test.js",
-		"start": "pm2 start server.js --name hearts-server",
-		"restart": "pm2 restart hearts-server",
-		"redeploy": "git reset --hard && git pull -X theirs && pm2 restart hearts-server",
-		"deploy": "git reset --hard && git pull -X theirs && pm2 start server.js --name hearts-server"
+		"start": "PORT=3000 node server.js"
 	},
 	"repository": {
 		"type": "git",

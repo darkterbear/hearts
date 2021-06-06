@@ -1,0 +1,9 @@
+{
+  "name": "hearts",
+  "version": "1.0.0",
+  "description": "An online room-based card game: Hearts",
+  "scripts": {
+    "install": "cd client && npm i && cd ../server && npm i",
+    "deploy": "./deploy.sh"
+  }
+}

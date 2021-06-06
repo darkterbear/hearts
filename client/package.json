@@ -7,17 +7,14 @@
 		"react-dom": "^16.4.0",
 		"react-notifications": "^1.4.3",
 		"react-router-dom": "^4.2.2",
-		"react-scripts": "^3.0.1",
+		"react-scripts": "^1.1.5",
 		"socket.io-client": "^2.1.1"
 	},
 	"scripts": {
-		"start": "react-scripts start",
+		"start": "PORT=5000 react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject",
-		"redeploy": "git reset --hard && git pull -X theirs && react-scripts build",
-		"deploy": "git reset --hard && git pull -X theirs && react-scripts build && serve -s -p 5001 build/",
-		"stop": "pm2 delete hearts-server"
+		"eject": "react-scripts eject"
 	},
 	"browserslist": [
 		">0.2%",
