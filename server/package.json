@@ -7,7 +7,12 @@
 		"test": "node test.js",
 		"start": "PORT=3000 node server.js"
 	},
-	"repository": {
+	"dependencies": {
+		"express": "^4.16.4",
+		"socket.io": "^2.1.1",
+		"socket.io-client": "^2.1.1"
+	},
+  "repository": {
 		"type": "git",
 		"url": "git+https://github.com/darkterbear/hearts.git"
 	},
@@ -17,9 +22,4 @@
 		"url": "https://github.com/darkterbear/hearts/issues"
 	},
 	"homepage": "https://github.com/darkterbear/hearts#readme",
-	"dependencies": {
-		"express": "^4.16.4",
-		"socket.io": "^2.1.1",
-		"socket.io-client": "^2.1.1"
-	}
 }
